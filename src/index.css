@@ -72,7 +72,7 @@ body {
   margin: 0 auto;
 }
 
-.card-list > * + * {
+.post-list > * + * {
   margin-top: 1.5em;
 }
 
