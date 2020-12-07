@@ -53,6 +53,7 @@ function App() {
   const [autocomplete, setAutocomplete] = useState([]);
   const suggestionsRef = useRef(null);
   suggestionsRef.current = [];
+  const debounceTimerRef = useRef(null);
 
   async function fetchData(subreddit = "all") {
     try {
@@ -88,6 +89,43 @@ function App() {
     );
   }
 
+  const debouncedSearch = debounce(async function () {
+    const response = await fetch(
+      `https://www.reddit.com/search.json?q=${subreddit}&type=sr`,
+    );
+    const data = await response.json();
+    const responseSuggestions = data?.data?.children.map(
+      (d) => d.data.display_name,
+    );
+
+    if (responseSuggestions != null) {
+      suggestionsRef.current = responseSuggestions;
+    }
+
+    let result = [];
+    for (const suggestion of suggestionsRef.current) {
+      if (suggestion.startsWith(subreddit) && subreddit !== "") {
+        result.push(suggestion);
+      }
+    }
+    setAutocomplete(suggestionsRef.current);
+  });
+
+  function debounce(cb) {
+    return function () {
+      clearTimeout(debounceTimerRef.current);
+      debounceTimerRef.current = setTimeout(() => {
+        cb();
+      }, 1000);
+    };
+  }
+
+  async function handleInputChange(e) {
+    const { value } = e.target;
+    setSubreddit(value);
+    debouncedSearch();
+  }
+
   const { status, error, data } = state;
 
   // console.log(data);
@@ -109,29 +147,7 @@ function App() {
           name="name"
           id="name"
           value={subreddit}
-          onChange={async function handleInputChange(e) {
-            const { value } = e.target;
-            setSubreddit(e.target.value);
-            const response = await fetch(
-              `https://www.reddit.com/search.json?q=${value}&type=sr`,
-            );
-            const data = await response.json();
-            const responseSuggestions = data?.data?.children.map(
-              (d) => d.data.display_name,
-            );
-
-            if (responseSuggestions != null) {
-              suggestionsRef.current = responseSuggestions;
-            }
-
-            let result = [];
-            for (const suggestion of suggestionsRef.current) {
-              if (suggestion.startsWith(value) && value !== "") {
-                result.push(suggestion);
-              }
-            }
-            setAutocomplete(suggestionsRef.current);
-          }}
+          onChange={handleInputChange}
         />
         {autocomplete.length > 0 && (
           <ul>
