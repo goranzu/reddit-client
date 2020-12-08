@@ -1,46 +1,29 @@
 import React, { useRef, useState } from "react";
 import useSubreddit from "../../hooks/useSubreddit";
-import { RESOLVED } from "../../lib/constants";
 import { debounce } from "../../lib/util";
 import AutoComplete from "../autocomplete/Autocomplete";
 
 function SearchForm({ fetchSubreddit }) {
-  const [state, fetchReddit] = useSubreddit();
   const [subreddit, setSubreddit] = useState("");
-  const suggestionsRef = useRef(null);
-  const debounceTimerRef = useRef(null);
-  suggestionsRef.current = [];
-  let autocompleteOptions = [];
+  const [state, fetch, reset] = useSubreddit();
+  const timerRef = useRef();
 
-  const { status, data } = state;
+  const search = debounce(async function search() {
+    fetch(
+      undefined,
+      `https://www.reddit.com/search.json?q=${subreddit}&type=sr`,
+    );
+  }, timerRef);
+
+  const options = state.data.map((o) => {
+    return o.data.display_name;
+  });
 
   async function handleInputChange(e) {
     const { value } = e.target;
     setSubreddit(value);
-    debouncedSearch();
+    search();
   }
-
-  if (status === RESOLVED) {
-    // TODO: Handle autocomplete state
-    console.log(state.data);
-    const responseSuggestions = data.map((d) => d.data.display_name);
-
-    if (responseSuggestions != null && responseSuggestions.length > 0) {
-      suggestionsRef.current = responseSuggestions;
-    }
-    autocompleteOptions = suggestionsRef.current;
-  }
-
-  const debouncedSearch = debounce(async function search() {
-    try {
-      await fetchReddit(
-        null,
-        `https://www.reddit.com/search.json?q=${subreddit}&type=sr`,
-      );
-    } catch (error) {
-      console.log(error);
-    }
-  }, debounceTimerRef);
 
   return (
     <>
@@ -48,7 +31,7 @@ function SearchForm({ fetchSubreddit }) {
         onSubmit={function handleSubmit(e) {
           e.preventDefault();
           if (!subreddit) return;
-          autocompleteOptions = [];
+          reset();
           fetchSubreddit(e.target.name.value);
         }}
       >
@@ -62,11 +45,12 @@ function SearchForm({ fetchSubreddit }) {
         />
         <button type="submit">Go</button>
       </form>
-      {autocompleteOptions.length > 0 && (
+      {options.length > 0 && (
         <AutoComplete
-          autocompleteOptions={autocompleteOptions}
+          autocompleteOptions={options}
           setSubreddit={setSubreddit}
           fetchSubreddit={fetchSubreddit}
+          reset={reset}
         />
       )}
     </>

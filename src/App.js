@@ -6,18 +6,18 @@ import useSubreddit from "./hooks/useSubreddit";
 import { LOADING, REJECTED, RESOLVED } from "./lib/constants";
 
 function App() {
-  const [state, fetchSubreddit] = useSubreddit();
+  const [state, fetch] = useSubreddit();
 
   useEffect(() => {
-    fetchSubreddit();
-  }, [fetchSubreddit]);
+    fetch();
+  }, [fetch]);
 
   const { status, error, data } = state;
 
   return (
     <main className="wrapper">
       <p>Most popular posts of the day.</p>
-      <SearchForm fetchSubreddit={fetchSubreddit} />
+      <SearchForm fetchSubreddit={fetch} />
 
       {status === REJECTED && <p>{JSON.stringify(error, null, 2)}</p>}
       {status === LOADING && <Loader />}

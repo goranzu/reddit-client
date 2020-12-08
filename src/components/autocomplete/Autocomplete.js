@@ -1,14 +1,19 @@
 import React from "react";
 
-function AutoComplete({ autocompleteOptions, setSubreddit, fetchSubreddit }) {
+function AutoComplete({
+  autocompleteOptions,
+  setSubreddit,
+  fetchSubreddit,
+  reset,
+}) {
   return (
     <ul>
       {autocompleteOptions.map((c) => (
         <li key={c}>
           <button
-            onClick={function handleAutoCompleteClick(e) {
-              setSubreddit(e.target.textContent);
-              autocompleteOptions = [];
+            onClick={function handleAutoCompleteClick() {
+              setSubreddit(c);
+              reset();
               fetchSubreddit(c);
             }}
           >

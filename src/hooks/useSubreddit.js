@@ -3,19 +3,21 @@ import { IDLE, LOADING, REJECTED, RESOLVED } from "../lib/constants";
 import { apiClient } from "../lib/util";
 
 const initialState = {
-  data: [],
   status: IDLE,
+  data: [],
   error: "",
 };
 
 function reducer(state, action) {
   switch (action.type) {
     case LOADING:
-      return { ...state, status: LOADING };
+      return { ...initialState, status: LOADING };
     case RESOLVED:
-      return { ...state, status: RESOLVED, data: action.payload.data };
+      return { ...initialState, status: RESOLVED, data: action.payload.data };
     case REJECTED:
-      return { ...state, status: REJECTED, error: action.payload.error };
+      return { ...initialState, status: REJECTED, error: action.payload.error };
+    case IDLE:
+      return { ...initialState };
     default:
       return { ...state };
   }
@@ -24,28 +26,29 @@ function reducer(state, action) {
 function useSubreddit() {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  async function f(
+  // Wrapped in useCallback because this gets called in a Apps useEffect hook.
+  const fetch = useCallback(async function fetch(
     subreddit = "all",
     url = `https://www.reddit.com/r/${subreddit}.json`,
   ) {
     try {
-      console.log(url);
       dispatch({ type: LOADING });
-      const response = await apiClient(url);
+      const data = await apiClient(url);
       dispatch({
         type: RESOLVED,
-        payload: { data: response?.data?.children || [] },
+        payload: { data: data?.data?.children || [] },
       });
     } catch (error) {
       dispatch({ type: REJECTED, payload: { error: error.message } });
     }
+  },
+  []);
+
+  function reset() {
+    dispatch({ type: IDLE });
   }
 
-  const fetchData = useCallback((subreddit, url) => {
-    f(subreddit, url);
-  }, []);
-
-  return [state, fetchData];
+  return [state, fetch, reset];
 }
 
 export default useSubreddit;
