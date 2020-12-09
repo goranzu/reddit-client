@@ -1,0 +1,20 @@
+.post {
+  padding: 1em;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  background-color: var(--card-background-color);
+}
+
+.post > * + * {
+  margin-top: 1em;
+}
+
+.post > a {
+  display: inline-block;
+}
+
+.post img {
+  width: 70%;
+  margin-left: auto;
+  margin-right: auto;
+}

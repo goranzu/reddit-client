@@ -15,20 +15,22 @@ function App() {
   const { status, error, data } = state;
 
   return (
-    <main className="wrapper">
-      <p>Most popular posts of the day.</p>
-      <SearchForm fetchSubreddit={fetch} />
-
-      {status === REJECTED && <p>{JSON.stringify(error, null, 2)}</p>}
-      {status === LOADING && <Loader />}
-      {status === RESOLVED && (
-        <ul className="post-list">
-          {data.map(({ data }) => (
-            <Post post={data} key={data.id} />
-          ))}
-        </ul>
-      )}
-    </main>
+    <>
+      <header className="header">
+        <SearchForm fetchSubreddit={fetch} />
+      </header>
+      <main className="wrapper">
+        {status === REJECTED && <p>{JSON.stringify(error, null, 2)}</p>}
+        {status === LOADING && <Loader />}
+        {status === RESOLVED && (
+          <ul className="post-list">
+            {data.map(({ data }) => (
+              <Post post={data} key={data.id} />
+            ))}
+          </ul>
+        )}
+      </main>
+    </>
   );
 }
 

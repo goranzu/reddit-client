@@ -1,4 +1,5 @@
 import React from "react";
+import styles from "./autocomplete.module.css";
 
 function AutoComplete({
   autocompleteOptions,
@@ -7,7 +8,7 @@ function AutoComplete({
   reset,
 }) {
   return (
-    <ul>
+    <ul className={styles.autocomplete}>
       {autocompleteOptions.map((c) => (
         <li key={c}>
           <button

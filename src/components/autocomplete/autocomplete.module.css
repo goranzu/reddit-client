@@ -1,0 +1,7 @@
+.autocomplete {
+  position: absolute;
+  top: 38px;
+  left: 0;
+  background-color: var(--medium-grey);
+  width: 100%;
+}

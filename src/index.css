@@ -4,8 +4,14 @@
   box-sizing: border-box;
   --light-grey: hsl(0, 0%, 95%);
   --medium-grey: hsl(0, 0%, 80%);
+  --dark-grey: hsl(0, 0%, 50%);
   --body-background-color: var(--medium-grey);
+  --header-background-color: var(--dark-grey);
   --card-background-color: var(--light-grey);
+  --sans-serif: "Work Sans", sans-serif;
+  --font-family: var(--sans-serif);
+  --border-radius: 5px;
+  --box-shadow: 0 2px 16px hsla(0, 0%, 0%, 0.3);
 }
 
 *,
@@ -65,17 +71,36 @@ video {
 
 body {
   background-color: var(--body-background-color);
+  font-family: var(--font-family);
 }
 
 .wrapper {
-  max-width: 1000px;
+  max-width: 700px;
   margin: 0 auto;
+}
+
+.post-list {
+  margin-top: 2em;
 }
 
 .post-list > * + * {
   margin-top: 1.5em;
 }
 
-.card {
-  background-color: var(--card-background-color);
+.header {
+  background-color: var(--header-background-color);
+  padding: 1.5em 0;
+  display: flex;
+  justify-content: center;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
