@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./autocomplete.module.css";
+import PropTypes from "prop-types";
 
 function AutoComplete({
   autocompleteOptions,
@@ -8,7 +9,7 @@ function AutoComplete({
   reset,
 }) {
   return (
-    <ul className={styles.autocomplete}>
+    <ul className={`${styles.autocomplete} au-form`}>
       {autocompleteOptions.map((c) => (
         <li key={c}>
           <button
@@ -25,5 +26,12 @@ function AutoComplete({
     </ul>
   );
 }
+
+AutoComplete.propTypes = {
+  autocompleteOptions: PropTypes.array.isRequired,
+  setSubreddit: PropTypes.func.isRequired,
+  fetchSubreddit: PropTypes.func.isRequired,
+  reset: PropTypes.func.isRequired,
+};
 
 export default AutoComplete;

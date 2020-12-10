@@ -1,3 +1,5 @@
+import React from "react";
+
 function isImage(url) {
   return url.match(/jpg$|png$|jpeg$|gif$|webp$/g);
 }

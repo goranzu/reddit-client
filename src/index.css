@@ -61,8 +61,9 @@ video {
   max-width: 100%;
 }
 
-.center {
+main > .loader {
   margin: 0 auto;
+  margin-top: 5em;
 }
 
 [hidden] {

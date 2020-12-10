@@ -20,3 +20,11 @@
   left: 8px;
   stroke: var(--header-background-color);
 }
+
+/* Positon autocomplete */
+.form > ul {
+  top: 38px;
+  left: 0;
+  background-color: var(--medium-grey);
+  width: 100%;
+}

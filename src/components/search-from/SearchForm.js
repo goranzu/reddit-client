@@ -1,4 +1,5 @@
 import React, { useRef, useState } from "react";
+import PropTypes from "prop-types";
 import useSubreddit from "../../hooks/useSubreddit";
 import { debounce } from "../../lib/util";
 import AutoComplete from "../autocomplete/Autocomplete";
@@ -60,5 +61,9 @@ function SearchForm({ fetchSubreddit }) {
     </form>
   );
 }
+
+SearchForm.propTypes = {
+  fetchSubreddit: PropTypes.func.isRequired,
+};
 
 export default SearchForm;

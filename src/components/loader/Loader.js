@@ -3,7 +3,7 @@ import styles from "./loader.module.css";
 
 function Loader() {
   return (
-    <div className={`${styles.loader} center`}>
+    <div className={`${styles.loader} loader`}>
       <div></div>
       <div></div>
       <div></div>
