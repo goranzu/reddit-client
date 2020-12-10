@@ -14,6 +14,8 @@ function App() {
 
   const { status, error, data } = state;
 
+  console.log(data);
+
   return (
     <>
       <header className="header">
@@ -25,7 +27,19 @@ function App() {
         {status === RESOLVED && (
           <ul className="post-list">
             {data.map(({ data }) => (
-              <Post post={data} key={data.id} />
+              <Post
+                title={data.title}
+                isVideo={data.is_video}
+                media={data.media}
+                permalink={data.permalink}
+                url={data.url}
+                key={data.id}
+                subredditNamePrefixed={data.subreddit_name_prefixed}
+                author={data.author}
+                created={data.created_utc}
+                numComments={data.num_comments}
+                score={data.score}
+              />
             ))}
           </ul>
         )}

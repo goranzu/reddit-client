@@ -3,6 +3,7 @@
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
   background-color: var(--card-background-color);
+  position: relative;
 }
 
 .post > * + * {
@@ -14,7 +15,52 @@
 }
 
 .post img {
-  width: 70%;
+  max-width: 70%;
   margin-left: auto;
   margin-right: auto;
+}
+
+.post video {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.comments a {
+  display: flex;
+  gap: 3px;
+}
+
+.comments svg {
+  stroke: var(--icon-color);
+  width: 20px;
+  height: 20px;
+}
+
+.postNav {
+  font-size: 0.825rem;
+  display: inline-block;
+}
+
+.postNav ul {
+  display: flex;
+  gap: 7px;
+}
+
+.postNav a {
+  color: var(--post-link-color);
+  text-decoration: none;
+}
+
+.postNav a:hover {
+  text-decoration: underline;
+}
+
+.score {
+  float: right;
+  margin-top: 0;
+  font-size: 1rem;
+  background-color: var(--badge-background-color);
+  color: var(--badge-text-color);
+  padding: 0.2em 0.4em;
+  border-radius: var(--border-radius);
 }

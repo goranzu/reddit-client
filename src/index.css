@@ -5,6 +5,10 @@
   --light-grey: hsl(0, 0%, 95%);
   --medium-grey: hsl(0, 0%, 80%);
   --dark-grey: hsl(0, 0%, 50%);
+  --icon-color: var(--dark-grey);
+  --post-link-color: var(--dark-grey);
+  --badge-background-color: var(--dark-grey);
+  --badge-text-color: var(--light-grey);
   --body-background-color: var(--medium-grey);
   --header-background-color: var(--dark-grey);
   --card-background-color: var(--light-grey);
