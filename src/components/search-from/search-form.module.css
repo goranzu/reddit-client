@@ -27,4 +27,5 @@
   left: 0;
   background-color: var(--medium-grey);
   width: 100%;
+  z-index: 100;
 }

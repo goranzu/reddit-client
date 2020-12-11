@@ -1,24 +1,28 @@
 import React, { useRef, useState } from "react";
-import PropTypes from "prop-types";
 import useSubreddit from "../../hooks/useSubreddit";
 import { debounce } from "../../lib/util";
 import AutoComplete from "../autocomplete/Autocomplete";
 import styles from "./search-form.module.css";
 import { ReactComponent as SearchIcon } from "../../assets/icons/search.svg";
+import { useHistory } from "react-router-dom";
 
-function SearchForm({ fetchSubreddit }) {
+function SearchForm() {
+  // TODO: FIX focus issues
   const [subreddit, setSubreddit] = useState("");
+  const [showAutocomplete, setShowAutocomplete] = useState(false);
   const [state, fetch, reset] = useSubreddit();
   const timerRef = useRef();
+  let history = useHistory();
 
   const search = debounce(async function search() {
     fetch(
       undefined,
       `https://www.reddit.com/search.json?q=${subreddit}&type=sr`,
     );
+    setShowAutocomplete(true);
   }, timerRef);
 
-  const options = state.data.map((o) => {
+  let options = state.data.map((o) => {
     return o.data.display_name;
   });
 
@@ -28,16 +32,17 @@ function SearchForm({ fetchSubreddit }) {
     search();
   }
 
+  function handleSubmit(e) {
+    e.preventDefault();
+    if (!subreddit) return;
+    reset();
+    history.push(`/r/${subreddit}`);
+    setShowAutocomplete(false);
+    reset();
+  }
+
   return (
-    <form
-      className={styles.form}
-      onSubmit={function handleSubmit(e) {
-        e.preventDefault();
-        if (!subreddit) return;
-        reset();
-        fetchSubreddit(e.target.name.value);
-      }}
-    >
+    <form className={styles.form} onSubmit={handleSubmit}>
       <label className="sr-only" htmlFor="name">
         Search for a subreddit:
       </label>
@@ -50,20 +55,16 @@ function SearchForm({ fetchSubreddit }) {
         placeholder="Search"
       />
       <SearchIcon />
-      {options.length > 0 && (
+      {options.length > 0 && showAutocomplete && (
         <AutoComplete
           autocompleteOptions={options}
           setSubreddit={setSubreddit}
-          fetchSubreddit={fetchSubreddit}
           reset={reset}
+          setShowAutocomplete={setShowAutocomplete}
         />
       )}
     </form>
   );
 }
-
-SearchForm.propTypes = {
-  fetchSubreddit: PropTypes.func.isRequired,
-};
 
 export default SearchForm;
