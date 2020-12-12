@@ -65,6 +65,10 @@ video {
   max-width: 100%;
 }
 
+#root > * + * {
+  margin-top: 1em;
+}
+
 main > .loader {
   margin: 0 auto;
   margin-top: 5em;
